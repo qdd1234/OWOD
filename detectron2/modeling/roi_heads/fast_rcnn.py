@@ -615,6 +615,7 @@ class FastRCNNOutputLayers(nn.Module):
         return loss
 
     def get_clustering_loss(self, input_features, proposals):
+        # input_features shape:[N,2048],N 可能是前景数量
         if not self.enable_clustering:
             return 0
 
@@ -622,6 +623,7 @@ class FastRCNNOutputLayers(nn.Module):
         c_loss = 0
         if storage.iter == self.clustering_start_iter:
             items = self.feature_store.retrieve(-1)
+            #print(len(items)) 有0,1,16等
             for index, item in enumerate(items):
                 if len(item) == 0:
                     self.means[index] = None
